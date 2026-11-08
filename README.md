@@ -2,7 +2,7 @@
 
 Repositorio con los scripts del proyecto y **demos ejecutables** para mostrar sus resultados en la presentación.
 Las cuatro planillas Excel (parques, materiales didácticos, mobiliario y dotación TIC) se migran a una base
-relacional SQLite en 3FN.
+relacional SQLite en 3FN, y opcionalmente a **Oracle**.
 
 ## Inicio rápido (sin las planillas originales)
 
@@ -30,15 +30,17 @@ Las cifras de conciliación, integridad y rendimiento con índices se recalculan
 comparación contra las planillas legacy (demo 5) y las cifras de origen (demo 3) se leen de `salida/benchmark.json` y
 `salida/auditoria.json`, generados por los scripts completos.
 
-## Con las planillas originales (pipeline completo)
+## Con las planillas originales (pipeline completo) y Oracle
 
 1. Copie los cuatro `Encabezado_*.xlsx` en `datos/` (ver `datos/LEEME.md`).
-2. Instale dependencias: `pip install -r requirements.txt` (incluye `xlrd`, necesario porque la planilla de TIC es `.xls`)
+2. Instale dependencias: `pip install -r requirements.txt` (incluye `xlrd` y `oracledb`)
 3. Ejecute:
 
 ```bash
 python demo.py migracion    # = python scripts/migracion_fenix.py   -> reconstruye salida/fenix_normalizada.db y auditoria.json
 python demo.py benchmark    # = python scripts/benchmark_fenix.py   -> salida/benchmark.json
+python demo.py oracle       # carga la base migrada en Oracle (para verla en DBeaver)
+python demo.py limpiar      # borra de Oracle todo lo cargado
 ```
 
 La migración es **idempotente**: borra y reconstruye la base en cada ejecución. Si no encuentra las planillas, termina
@@ -52,12 +54,14 @@ conserva las mediciones usadas en el informe y la presentación, y `salida/bench
 ## Estructura
 
 ```
-demo.py                  lanzador de demos
+demo.py                  lanzador de demos (interactivo, migracion, benchmark, oracle, limpiar)
 demos/                   demos 1 a 5 (solo sqlite3 de la biblioteca estándar)
 scripts/
   migracion_fenix.py     ETL: extraer, estandarizar, depurar, cargar, verificar
   benchmark_fenix.py     planillas "tal cual" vs. base normalizada (mediana de 15 ejecuciones)
-datos/                   planillas originales (no versionadas)
+  cargar_oracle.py       carga los datos normalizados en Oracle Database
+  limpiar_oracle.py      limpia los datos cargados en Oracle Database
+datos/                   planillas originales (vía Git LFS / exclusión)
 salida/                  base generada, auditoria.json, benchmark.json
 docs/                    informe (.docx) y presentación (.pptx)
 ```
