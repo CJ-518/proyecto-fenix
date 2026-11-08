@@ -1,0 +1,27 @@
+{
+  "include": [
+    "demo.py",
+    "demos",
+    "scripts"
+  ],
+  "typeCheckingMode": "standard",
+  "executionEnvironments": [
+    {
+      "root": "scripts",
+      "reportArgumentType": "none",
+      "reportAttributeAccessIssue": "none",
+      "reportCallIssue": "none",
+      "reportGeneralTypeIssues": "none",
+      "reportOperatorIssue": "none"
+    },
+    {
+      "root": "demos",
+      "extraPaths": [
+        "demos"
+      ]
+    },
+    {
+      "root": "."
+    }
+  ]
+}

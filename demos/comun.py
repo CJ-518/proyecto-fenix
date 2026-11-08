@@ -6,8 +6,9 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SALIDA = os.path.join(RAIZ, "salida")
 DB = os.path.join(SALIDA, "fenix_normalizada.db")
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+_reconfigure = getattr(sys.stdout, "reconfigure", None)
+if _reconfigure:
+    _reconfigure(encoding="utf-8")
 
 
 def conectar():

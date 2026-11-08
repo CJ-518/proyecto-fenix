@@ -45,6 +45,7 @@ def build_legacy():
 
 def timeit(con, sql, args=(), reps=15):
     ts = []
+    rows = []
     for _ in range(reps):
         t0 = time.perf_counter()
         rows = con.execute(sql, args).fetchall()
@@ -111,7 +112,7 @@ def main():
            WHERE i.categoria='MOBILIARIO' GROUP BY i.descripcion""", ())
     res["consultas"] = {}
     for k, (sl, al, sn, an) in Q.items():
-        t_leg, n_leg, r_leg = timeit(leg, sl, al)
+        t_leg, n_leg, _ = timeit(leg, sl, al)
         t_sin, n_sin, _ = timeit(nor, sn, an)
         # normalizado SIN indices secundarios (para aislar el efecto del indice)
         tmp = sqlite3.connect(":memory:"); nor.backup(tmp)

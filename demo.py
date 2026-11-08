@@ -13,7 +13,11 @@ Uso:
 La salida de cada demo se muestra paginada: se limpia la pantalla y, si el texto no cabe
 sin hacer scroll, se espera una tecla para ver la pagina siguiente (q = saltar el resto).
 """
-import glob, os, shutil, subprocess, sys, textwrap
+import glob
+import os
+import shutil
+import subprocess
+import sys
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
 DEMOS = {
@@ -28,8 +32,9 @@ PIPELINE = {
     "benchmark": ("Benchmark completo (planillas vs. base)", "scripts/benchmark_fenix.py"),
 }
 
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+_reconfigure = getattr(sys.stdout, "reconfigure", None)
+if _reconfigure:
+    _reconfigure(encoding="utf-8")
 
 
 # ------------------------------------------------------------------ terminal
@@ -47,17 +52,18 @@ def esperar_tecla():
     """Espera una sola tecla (sin Enter). Devuelve el caracter pulsado."""
     if not interactivo():
         return ""
+    if sys.platform == "win32":
+        import msvcrt
+        ch = msvcrt.getwch()
+        if ch in ("\x00", "\xe0"):  # tecla especial (flechas, F1...): descartar el 2.o codigo
+            msvcrt.getwch()
+            return ""
+        if ch == "\x03":
+            raise KeyboardInterrupt
+        return ch
     try:
-        if os.name == "nt":
-            import msvcrt
-            ch = msvcrt.getwch()
-            if ch in ("\x00", "\xe0"):  # tecla especial (flechas, F1...): descartar el 2.o codigo
-                msvcrt.getwch()
-                return ""
-            if ch == "\x03":
-                raise KeyboardInterrupt
-            return ch
-        import termios, tty
+        import termios
+        import tty
         fd = sys.stdin.fileno()
         viejo = termios.tcgetattr(fd)
         try:
@@ -65,12 +71,12 @@ def esperar_tecla():
             ch = sys.stdin.read(1)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, viejo)
-        if ch == "\x03":
-            raise KeyboardInterrupt
-        return ch
-    except (ImportError, OSError, termios.error if os.name != "nt" else OSError):
+    except Exception:  # terminal sin modo "raw": se pide Enter
         input()
         return ""
+    if ch == "\x03":
+        raise KeyboardInterrupt
+    return ch
 
 
 def filas_de(linea, ancho):
@@ -139,7 +145,7 @@ def correr(ruta, pie_final=True):
         print(f"Ejecutando {ruta} ...")
     env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
     r = subprocess.run([sys.executable, os.path.join(RAIZ, ruta)], cwd=RAIZ, env=env,
-                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
     salida = r.stdout.decode("utf-8", errors="replace").replace("\r\n", "\n").rstrip("\n")
     lineas = salida.split("\n")
     if r.returncode:
@@ -178,7 +184,7 @@ def ejecutar(op, desde_menu=False):
     elif op in PIPELINE:
         correr(PIPELINE[op][1], pie_final=desde_menu)
     elif op == "todo":
-        for _, (_, ruta) in DEMOS.items():
+        for _, ruta in DEMOS.values():
             correr(ruta, pie_final=True)
     else:
         print(f"Opcion no valida: {op}")
