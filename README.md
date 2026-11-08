@@ -70,3 +70,7 @@ docs/                    informe (.docx) y presentación (.pptx)
 
 - Los scripts `migracion_fenix.py` y `benchmark_fenix.py` utilizan rutas relativas al repositorio (`datos/`, `salida/`) y avisan si faltan las planillas.
 - Los tiempos son medianas en SQLite con ~11 mil filas: sirven para comparar estructuras, no para predecir producción.
+
+## Licencia
+
+Este proyecto está distribuido bajo los términos de la licencia **GNU General Public License v3.0 (GPLv3)**. Consulta el archivo [LICENSE](LICENSE) para más detalles.
