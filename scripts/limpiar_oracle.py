@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Proyecto Fenix - Elimina de Oracle todo lo cargado por cargar_oracle.py.
 

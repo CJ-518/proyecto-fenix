@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Proyecto Fenix - Carga de la base normalizada en Oracle (para explorarla con DBeaver).
 
