@@ -54,6 +54,27 @@ def timeit(con, sql, args=(), reps=15):
 def plan(con, sql, args=()):
     return [r[3] for r in con.execute("EXPLAIN QUERY PLAN " + sql, args).fetchall()]
 
+def nf(x, dec=0):
+    """Numero con punto de miles y coma decimal."""
+    return f"{x:,.{dec}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def imprimir_resumen(res):
+    """Resumen legible del benchmark (el detalle y los planes quedan en benchmark.json)."""
+    print("\n" + "=" * 78)
+    print("  BENCHMARK COMPLETADO  (mediana de 15 ejecuciones, en milisegundos)")
+    print("=" * 78)
+    print(f"\n{'consulta':<52}{'legacy':>8}{'s/indices':>11}{'c/indices':>11}")
+    for k, v in res["consultas"].items():
+        print(f"{k[:51]:<52}{v['legacy_ms']:>8.3f}{v['normalizado_sin_indices_ms']:>11.3f}{v['normalizado_con_indices_ms']:>11.3f}")
+    t = res["tamano_kb"]
+    print(f"\nTamano en disco: legacy {nf(t['legacy'])} KB -> normalizada {nf(t['normalizado'])} KB "
+          f"({nf(100 * (t['normalizado'] / t['legacy'] - 1), 1)} %)")
+    print(f"Formatos distintos de latitud en el origen: {res['formatos_latitud_origen']}; "
+          f"latitudes no decimales en el destino: {res['latitud_no_decimal_destino']}")
+    print("\nDetalle y planes de ejecucion en salida/benchmark.json")
+
+
 def main():
     leg = build_legacy()
     nor = sqlite3.connect(NORM)
@@ -115,7 +136,7 @@ def main():
         SELECT empresa1 FROM leg_mobiliario UNION SELECT empresa1 FROM leg_tic)""").fetchone()[0]
     with open(os.path.join(OUT, "benchmark.json"), "w", encoding="utf-8") as f:
         json.dump(res, f, ensure_ascii=False, indent=1)
-    print(json.dumps(res, ensure_ascii=False, indent=1))
+    imprimir_resumen(res)
 
 if __name__ == "__main__":
     main()

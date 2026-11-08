@@ -332,6 +332,36 @@ FROM entrega e LEFT JOIN pago p ON p.id_entrega = e.id_entrega GROUP BY e.id_ent
 """
 
 # ------------------------------------------------------------------ transformacion + carga
+def nf(x, dec=0):
+    """Numero con punto de miles y coma decimal."""
+    return f"{x:,.{dec}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def imprimir_resumen(a):
+    """Resumen legible de la auditoria (el detalle completo queda en auditoria.json)."""
+    print("\n" + "=" * 70)
+    print("  MIGRACION COMPLETADA")
+    print("=" * 70)
+    print("\nFilas por planilla      origen   estandarizadas")
+    for h, n_ in a["filas_origen"].items():
+        print(f"  {h:<12}  {nf(n_):>10}   {nf(a['filas_estandarizadas'][h]):>10}")
+    print("\nBase destino (filas por tabla)")
+    for t_, n_ in a["destino"].items():
+        print(f"  {t_:<18} {nf(n_):>10}")
+    print("\nMontos adjudicados            origen           destino")
+    for h, v in a["monto_origen"].items():
+        d = a["monto_destino"].get(h, 0)
+        print(f"  {h:<12}  {nf(v):>18}  {nf(d):>16}  {'OK' if abs(v - d) < 1 else 'REVISAR'}")
+    print("\nRechazos en cuarentena")
+    for k, n_ in a["rechazos_por_motivo"].items():
+        print(f"  {k.replace('|', ' / '):<32} {nf(n_):>5}")
+    print(f"\nIntegridad: foreign_key_check = {a['fk_violaciones']} violaciones; integrity_check = {a['integrity']}")
+    print("\nTop 5 empresas por monto")
+    for e, n_, m in a["top_empresas"]:
+        print(f"  {e:<32} {nf(n_):>6} entregas  {nf(m):>16}")
+    print("\nDetalle completo en salida/auditoria.json")
+
+
 def main():
     p, m, b, t = read_all()
     AUD["filas_origen"] = {"PARQUES": len(p), "MATERIALES": len(m), "MOBILIARIO": len(b), "TIC": len(t)}
@@ -507,7 +537,7 @@ def main():
     con.close()
     with open(os.path.join(OUT, "auditoria.json"), "w", encoding="utf-8") as f:
         json.dump(AUD, f, ensure_ascii=False, indent=1, default=str)
-    print(json.dumps(AUD, ensure_ascii=False, indent=1, default=str))
+    imprimir_resumen(AUD)
 
 if __name__ == "__main__":
     main()
