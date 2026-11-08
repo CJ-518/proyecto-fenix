@@ -42,7 +42,7 @@ python demo.py benchmark    # = python scripts/benchmark_fenix.py   -> salida/be
 ```
 
 La migración es **idempotente**: borra y reconstruye la base en cada ejecución. Si no encuentra las planillas, termina
-con un mensaje claro **sin tocar** la base existente. Ambos scripts aceptan rutas propias:
+con un mensaje claro sin tocar la base existente. Ambos scripts aceptan rutas propias:
 `python scripts/migracion_fenix.py <carpeta_datos> <carpeta_salida>`.
 
 Verificado con las planillas reales: la migración regenera exactamente la misma auditoría (10.930 filas, 10.821 entregas,
@@ -64,6 +64,5 @@ docs/                    informe (.docx) y presentación (.pptx)
 
 ## Notas
 
-- Los scripts `migracion_fenix.py` y `benchmark_fenix.py` son los originales del proyecto; el único cambio es que sus
-  rutas por defecto ahora son relativas al repositorio (`datos/`, `salida/`) y avisan si faltan las planillas.
+- Los scripts `migracion_fenix.py` y `benchmark_fenix.py` utilizan rutas relativas al repositorio (`datos/`, `salida/`) y avisan si faltan las planillas.
 - Los tiempos son medianas en SQLite con ~11 mil filas: sirven para comparar estructuras, no para predecir producción.
