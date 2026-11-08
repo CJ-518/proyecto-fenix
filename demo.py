@@ -7,10 +7,17 @@ Uso:
   python demo.py todo       ejecuta las demos 1 a 5, una tras otra
   python demo.py migracion  ejecuta la migracion real (requiere las planillas en datos/)
   python demo.py benchmark  ejecuta el benchmark completo (requiere las planillas en datos/)
+  python demo.py oracle     carga la base migrada en Oracle (para verla en DBeaver)
+  python demo.py limpiar    borra de Oracle todo lo cargado (para repetir la demostracion)
 
 La salida de cada demo se muestra paginada: se limpia la pantalla y, si el texto no cabe
 sin hacer scroll, se espera una tecla para ver la pagina siguiente (q = saltar el resto).
+
+Oracle: requiere  python -m pip install oracledb  y el usuario creado con
+scripts/oracle_crear_usuario.sql. La clave se pide una sola vez por sesion (o se toma de la
+variable de entorno FENIX_ORA_PASSWORD).
 """
+import getpass
 import glob
 import os
 import shutil
@@ -28,7 +35,11 @@ DEMOS = {
 PIPELINE = {
     "migracion": ("Migración real (Excel -> SQLite 3FN)", "scripts/migracion_fenix.py"),
     "benchmark": ("Benchmark completo (planillas vs. base)", "scripts/benchmark_fenix.py"),
+    "oracle": ("Cargar la base migrada en Oracle (ver en DBeaver)", "scripts/cargar_oracle.py"),
+    "limpiar": ("Borrar de Oracle todo lo cargado", "scripts/limpiar_oracle.py"),
 }
+ATAJOS = {"m": "migracion", "b": "benchmark", "o": "oracle", "l": "limpiar", "t": "todo"}
+_SESION = {}  # datos que se recuerdan mientras el menu esta abierto (la clave de Oracle)
 
 _reconfigure = getattr(sys.stdout, "reconfigure", None)
 if _reconfigure:
@@ -140,13 +151,20 @@ def hay_planillas():
     return bool(glob.glob(os.path.join(RAIZ, "datos", "Encabezado_*.xls*")))
 
 
-def correr(ruta, pie_final=True):
+def clave_oracle():
+    """Clave del usuario FENIX de Oracle: variable de entorno o se pide una vez por sesion."""
+    if "clave" not in _SESION:
+        _SESION["clave"] = os.environ.get("FENIX_ORA_PASSWORD") or getpass.getpass("Clave de FENIX en Oracle: ")
+    return _SESION["clave"]
+
+
+def correr(ruta, pie_final=True, args=(), env_extra=None):
     """Ejecuta un script, captura su salida y la muestra paginada."""
     if interactivo():
         limpiar()
         print(f"Ejecutando {ruta} ...")
-    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
-    r = subprocess.run([sys.executable, os.path.join(RAIZ, ruta)], cwd=RAIZ, env=env,
+    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1", **(env_extra or {}))
+    r = subprocess.run([sys.executable, os.path.join(RAIZ, ruta), *args], cwd=RAIZ, env=env,
                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
     salida = r.stdout.decode("utf-8", errors="replace").replace("\r\n", "\n").rstrip("\n")
     lineas = salida.split("\n")
@@ -154,7 +172,29 @@ def correr(ruta, pie_final=True):
         lineas += ["", f"[el script termino con codigo {r.returncode}]"]
         if "openpyxl" in salida or "xlrd" in salida:
             lineas += ["Faltan dependencias. Instalelas con:  python -m pip install -r requirements.txt"]
+        if "oracledb" in salida and "Falta el paquete" in salida:
+            lineas += ["Instale el driver de Oracle con:  python -m pip install oracledb"]
     paginar(lineas, pie_final)
+
+
+def correr_oracle(op, pie_final):
+    """Carga (oracle) o borra (limpiar) lo cargado en Oracle, pasando la clave por entorno."""
+    try:
+        env = {"FENIX_ORA_PASSWORD": clave_oracle()}
+    except (EOFError, KeyboardInterrupt):
+        print("\nCancelado: no se ingreso la clave.")
+        return
+    # el menu ya pidio confirmacion: el script de limpieza no vuelve a preguntar
+    correr(PIPELINE[op][1], pie_final=pie_final, args=("--si",) if op == "limpiar" else (), env_extra=env)
+
+
+def confirmar_limpieza():
+    print("Se borraran de Oracle todas las tablas y vistas cargadas (el usuario FENIX se conserva).")
+    print("Continuar? [s/N]: ", end="", flush=True)
+    try:
+        return input().strip().lower() in ("s", "si", "y", "yes")
+    except EOFError:
+        return False
 
 
 def menu():
@@ -166,6 +206,8 @@ def menu():
         estado = "planillas encontradas" if hay_planillas() else "faltan las planillas en datos/"
         print(f"  m) {PIPELINE['migracion'][0]}   [{estado}]")
         print(f"  b) {PIPELINE['benchmark'][0]}")
+        print(f"  o) {PIPELINE['oracle'][0]}")
+        print(f"  l) {PIPELINE['limpiar'][0]}")
         print("  t) Todas las demos (1 a 5)")
         print("  q) Salir")
         print("\nElija una opcion y pulse Enter: ", end="", flush=True)
@@ -180,9 +222,16 @@ def menu():
 
 
 def ejecutar(op, desde_menu=False):
-    op = {"m": "migracion", "b": "benchmark", "t": "todo"}.get(op, op)
+    op = ATAJOS.get(op, op)
     if op in DEMOS:
         correr(DEMOS[op][1], pie_final=desde_menu)
+    elif op in ("oracle", "limpiar"):
+        if op == "limpiar" and interactivo() and not confirmar_limpieza():
+            print("Cancelado: no se borro nada.")
+            if desde_menu:
+                esperar_tecla()
+            return
+        correr_oracle(op, pie_final=desde_menu)
     elif op in PIPELINE:
         correr(PIPELINE[op][1], pie_final=desde_menu)
     elif op == "todo":
