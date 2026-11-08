@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Proyecto Fenix - Script de migracion (Fase 3)
 Origen : 4 planillas legacy (parques, materiales didacticos, mobiliario, dotacion TIC)
