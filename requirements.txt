@@ -2,5 +2,6 @@
 # Las demos (demo.py 1..5) usan unicamente la biblioteca estandar de Python.
 pandas>=2.0
 openpyxl>=3.1
-openpyxl>=3.1
 xlrd>=2.0.1   # la planilla de TIC es .xls (formato antiguo)
+# Solo para scripts/cargar_oracle.py (cargar la base en Oracle y verla en DBeaver).
+oracledb>=2.0
