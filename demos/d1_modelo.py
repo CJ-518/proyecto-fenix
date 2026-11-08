@@ -1,7 +1,7 @@
 """Demo 1 - El modelo rediseñado: 11 tablas en 3FN, claves y reglas dentro del motor."""
 import sqlite3
 
-from comun import conectar, n, titulo, seccion, tabla, sql
+from comun import conectar, n, seccion, sql, tabla, titulo
 
 con = conectar()
 titulo("DEMO 1 · MODELO REDISEÑADO", "De cuatro planillas anchas a tablas en tercera forma normal")

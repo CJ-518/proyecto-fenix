@@ -5,7 +5,16 @@ contra el esquema normalizado con indices. Requiere haber corrido migracion_feni
 Uso: python3 scripts/benchmark_fenix.py [carpeta_datos] [carpeta_salida]
      (por defecto: ./datos y ./salida, relativas a la raiz del repositorio)
 """
-import sys, os, re, glob, json, time, sqlite3, statistics, warnings
+import glob
+import json
+import os
+import re
+import sqlite3
+import statistics
+import sys
+import time
+import warnings
+
 import pandas as pd
 
 warnings.filterwarnings("ignore")

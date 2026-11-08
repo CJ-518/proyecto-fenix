@@ -1,8 +1,9 @@
 """Demo 5 - Rendimiento: efecto de los indices (en vivo) y comparacion con las planillas (benchmark.json)."""
-import statistics, time
 import sqlite3
+import statistics
+import time
 
-from comun import conectar, cargar_json, n, titulo, seccion, tabla
+from comun import cargar_json, conectar, n, seccion, tabla, titulo
 
 con = conectar()
 bench = cargar_json("benchmark.json")

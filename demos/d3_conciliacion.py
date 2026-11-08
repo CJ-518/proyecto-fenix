@@ -1,5 +1,5 @@
 """Demo 3 - Conciliacion origen-destino y verificacion de integridad (en vivo)."""
-from comun import conectar, cargar_json, n, titulo, seccion, tabla, sql
+from comun import cargar_json, conectar, n, seccion, sql, tabla, titulo
 
 con = conectar()
 aud = cargar_json("auditoria.json")

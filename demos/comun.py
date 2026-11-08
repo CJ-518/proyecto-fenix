@@ -1,5 +1,8 @@
 """Utilidades compartidas por las demos (solo biblioteca estandar)."""
-import json, os, sqlite3, sys
+import json
+import os
+import sqlite3
+import sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SALIDA = os.path.join(RAIZ, "salida")

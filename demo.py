@@ -62,6 +62,10 @@ def esperar_tecla():
     try:
         import termios
         import tty
+    except ImportError:  # plataforma sin termios: se pide Enter
+        input()
+        return ""
+    try:
         fd = sys.stdin.fileno()
         viejo = termios.tcgetattr(fd)
         try:
@@ -69,7 +73,7 @@ def esperar_tecla():
             ch = sys.stdin.read(1)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, viejo)
-    except Exception:  # terminal sin modo "raw": se pide Enter
+    except (OSError, ValueError, termios.error):  # terminal sin modo "raw": se pide Enter
         input()
         return ""
     if ch == "\x03":

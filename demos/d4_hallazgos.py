@@ -1,5 +1,5 @@
 """Demo 4 - Lo que revela la nueva base: consultas imposibles con las planillas separadas."""
-from comun import conectar, n, titulo, seccion, tabla, sql
+from comun import conectar, n, seccion, sql, tabla, titulo
 
 con = conectar()
 titulo("DEMO 4 · LO QUE REVELA LA NUEVA BASE", "Consultas que cruzan las cuatro fuentes con un solo SQL")
