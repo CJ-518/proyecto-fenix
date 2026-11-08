@@ -1,7 +1,4 @@
 __pycache__/
 *.pyc
-# Las planillas originales pueden contener datos no publicos: no se versionan
-datos/*.xlsx
-datos/*.xls
 # Base temporal que genera el benchmark
 salida/fenix_legacy_benchmark.db
