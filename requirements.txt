@@ -1,0 +1,6 @@
+# Solo hacen falta para migracion_fenix.py y benchmark_fenix.py (leen los Excel).
+# Las demos (demo.py 1..5) usan unicamente la biblioteca estandar de Python.
+pandas>=2.0
+openpyxl>=3.1
+openpyxl>=3.1
+xlrd>=2.0.1   # la planilla de TIC es .xls (formato antiguo)

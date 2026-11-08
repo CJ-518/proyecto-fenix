@@ -1,0 +1,80 @@
+{
+ "establecimiento_ejemplo": "0405002",
+ "consultas": {
+  "Q1 Monto adjudicado por empresa (4 categorias)": {
+   "legacy_ms": 5.49,
+   "filas_legacy": 28,
+   "normalizado_sin_indices_ms": 6.089,
+   "normalizado_con_indices_ms": 5.897,
+   "filas_normalizado": 25,
+   "plan_legacy": [
+    "CO-ROUTINE (subquery-4)",
+    "COMPOUND QUERY",
+    "LEFT-MOST SUBQUERY"
+   ],
+   "plan_normalizado": [
+    "SCAN e",
+    "SEARCH i USING INTEGER PRIMARY KEY (rowid=?)",
+    "SEARCH es USING INTEGER PRIMARY KEY (rowid=?)",
+    "SEARCH di USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+   ]
+  },
+  "Q2 Establecimientos que recibieron las 4 categorias": {
+   "legacy_ms": 2.164,
+   "filas_legacy": 1,
+   "normalizado_sin_indices_ms": 8.965,
+   "normalizado_con_indices_ms": 4.545,
+   "filas_normalizado": 1,
+   "plan_legacy": [
+    "CO-ROUTINE (subquery-4)",
+    "COMPOUND QUERY",
+    "LEFT-MOST SUBQUERY"
+   ],
+   "plan_normalizado": [
+    "CO-ROUTINE v_cobertura_establecimiento",
+    "SCAN es",
+    "SEARCH e USING INDEX ix_entrega_estab (id_establecimiento=?) LEFT-JOIN",
+    "SEARCH i USING INTEGER PRIMARY KEY (rowid=?) LEFT-JOIN"
+   ]
+  },
+  "Q3 Todas las entregas de un establecimiento": {
+   "legacy_ms": 1.147,
+   "filas_legacy": 47,
+   "normalizado_sin_indices_ms": 0.556,
+   "normalizado_con_indices_ms": 0.034,
+   "filas_normalizado": 47,
+   "plan_legacy": [
+    "COMPOUND QUERY",
+    "LEFT-MOST SUBQUERY",
+    "SCAN leg_parques"
+   ],
+   "plan_normalizado": [
+    "SEARCH es USING COVERING INDEX sqlite_autoindex_establecimiento_1 (codigo=?)",
+    "SEARCH e USING INDEX ix_entrega_estab (id_establecimiento=?)",
+    "SEARCH i USING INTEGER PRIMARY KEY (rowid=?)"
+   ]
+  },
+  "Q4 Cantidad total entregada por tipo de mobiliario": {
+   "legacy_ms": 3.221,
+   "filas_legacy": 43,
+   "normalizado_sin_indices_ms": 29.497,
+   "normalizado_con_indices_ms": 1.724,
+   "filas_normalizado": 42,
+   "plan_legacy": [
+    "SCAN leg_mobiliario",
+    "USE TEMP B-TREE FOR GROUP BY"
+   ],
+   "plan_normalizado": [
+    "SEARCH i USING COVERING INDEX sqlite_autoindex_item_1 (categoria=?)",
+    "SEARCH e USING INDEX ix_entrega_item (id_item=?)"
+   ]
+  }
+ },
+ "tamano_kb": {
+  "legacy": 4560,
+  "normalizado": 2436
+ },
+ "formatos_latitud_origen": 10,
+ "latitud_no_decimal_destino": 0,
+ "empresa_variantes_legacy": 27
+}

@@ -1,0 +1,145 @@
+{
+ "filas_origen": {
+  "PARQUES": 555,
+  "MATERIALES": 2424,
+  "MOBILIARIO": 6289,
+  "TIC": 1662
+ },
+ "columnas_origen": {
+  "PARQUES": 33,
+  "MATERIALES": 27,
+  "MOBILIARIO": 29,
+  "TIC": 28
+ },
+ "mob_duplicados_monto": 15461000.0,
+ "monto_origen": {
+  "MATERIALES": 17145459502.0,
+  "MOBILIARIO": 7355889770.0,
+  "PARQUES": 26832441663.00003,
+  "TIC": 5088430000.0
+ },
+ "filas_estandarizadas": {
+  "MATERIALES": 2424,
+  "MOBILIARIO": 6270,
+  "PARQUES": 555,
+  "TIC": 1661
+ },
+ "mapa_departamentos": {
+  "0": "CAPITAL",
+  "1": "CONCEPCIÓN",
+  "2": "SAN PEDRO",
+  "3": "CORDILLERA",
+  "4": "GUAIRÁ",
+  "5": "CAAGUAZÚ",
+  "6": "CAAZAPÁ",
+  "7": "ITAPÚA",
+  "8": "MISIONES",
+  "9": "PARAGUARÍ",
+  "10": "ALTO PARANÁ",
+  "11": "CENTRAL",
+  "12": "ÑEEMBUCÚ",
+  "13": "AMAMBAY",
+  "14": "CANINDEYÚ",
+  "15": "PRESIDENTE HAYES",
+  "16": "BOQUERÓN",
+  "17": "ALTO PARAGUAY"
+ },
+ "conflictos_atributos_establecimiento": {
+  "lat": 91,
+  "lon": 91,
+  "zona": 14,
+  "cai": 2,
+  "indigena": 1
+ },
+ "instituciones": 680,
+ "empresas_variantes": 26,
+ "empresas_unicas": 25,
+ "variantes_codigo_licitacion": 16,
+ "destino": {
+  "departamento": 18,
+  "distrito": 202,
+  "establecimiento": 685,
+  "institucion": 680,
+  "empresa": 25,
+  "llamado": 16,
+  "contrato": 72,
+  "item": 79,
+  "entrega": 10821,
+  "concepto_pago": 7,
+  "pago": 20367,
+  "rechazo_migracion": 109
+ },
+ "monto_destino": {
+  "MATERIALES": 17145459502.0,
+  "MOBILIARIO": 7355889770.0,
+  "PARQUES": 26832441663.0,
+  "TIC": 5088430000.0
+ },
+ "rechazos_por_motivo": {
+  "MATERIALES|SIN_ENTREGA": 29,
+  "MOBILIARIO|DUPLICADO_EXACTO": 18,
+  "MOBILIARIO|FILA_VACIA": 1,
+  "MOBILIARIO|SIN_ENTREGA": 60,
+  "TIC|FILA_VACIA": 1
+ },
+ "fk_violaciones": 0,
+ "integrity": "ok",
+ "coord_nulas_estab": 17,
+ "fechas_acta_parciales": 21,
+ "conciliacion": {
+  "MATERIALES": [
+   2395,
+   1,
+   40000.0
+  ],
+  "MOBILIARIO": [
+   6210,
+   27,
+   132880.0
+  ],
+  "PARQUES": [
+   555,
+   0,
+   0
+  ],
+  "TIC": [
+   1661,
+   0,
+   0
+  ]
+ },
+ "cobertura": {
+  "0": 57,
+  "1": 60,
+  "2": 7,
+  "3": 130,
+  "4": 431
+ },
+ "top_empresas": [
+  [
+   "Atlas Representaciones S.A.",
+   1127,
+   8704092857.0
+  ],
+  [
+   "LAS CUEVAS S.A",
+   169,
+   8539999997.0
+  ],
+  [
+   "CONSORCIO EL SHADDAI",
+   170,
+   8428000000.0
+  ],
+  [
+   "N y P S.A.",
+   268,
+   5924125292.0
+  ],
+  [
+   "CONDE S.A",
+   124,
+   5449615800.0
+  ]
+ ]
+}
