@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Demo 1 - El modelo rediseñado: 11 tablas en 3FN, claves y reglas dentro del motor."""
 import sqlite3
 

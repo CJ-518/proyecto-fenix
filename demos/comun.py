@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Utilidades compartidas por las demos (solo biblioteca estandar)."""
 import json, os, sqlite3, sys
 

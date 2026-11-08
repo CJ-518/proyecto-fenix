@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Demo 3 - Conciliacion origen-destino y verificacion de integridad (en vivo)."""
 from comun import conectar, cargar_json, n, titulo, seccion, tabla, sql
 

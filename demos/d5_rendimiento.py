@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Demo 5 - Rendimiento: efecto de los indices (en vivo) y comparacion con las planillas (benchmark.json)."""
 import statistics, time
 import sqlite3

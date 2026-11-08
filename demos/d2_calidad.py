@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Demo 2 - Calidad de datos antes y despues de la migracion."""
 from comun import conectar, cargar_json, n, titulo, seccion, tabla, sql
 

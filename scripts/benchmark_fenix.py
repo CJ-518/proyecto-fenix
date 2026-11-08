@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Proyecto Fenix - Benchmark de optimizacion (Fase 3)
 Compara consultas sobre las planillas legacy cargadas "tal cual" (sin indices ni tipos)

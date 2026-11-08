@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Demo 4 - Lo que revela la nueva base: consultas imposibles con las planillas separadas."""
 from comun import conectar, n, titulo, seccion, tabla, sql
 
