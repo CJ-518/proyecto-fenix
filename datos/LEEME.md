@@ -12,7 +12,5 @@ Nombres esperados (el script busca por prefijo):
 | Mobiliario | `Encabezado_MOBILIARIO*.xlsx` |
 | Dotación TIC | `Encabezado_DOTAC*.xls` (formato antiguo; requiere `xlrd`) |
 
-Con las planillas aquí, `python demo.py migracion` reconstruye `salida/fenix_normalizada.db` desde cero
-y `python demo.py benchmark` repite la comparación contra las planillas.
-
-Sin ellas, las demos 1 a 5 funcionan igual sobre la base ya generada que está en `salida/`.
+Con las planillas aquí, `python scripts/migracion_fenix.py` reconstruye `salida/fenix_normalizada.db` desde cero
+y `python scripts/benchmark_fenix.py` repite la comparación contra las planillas.
