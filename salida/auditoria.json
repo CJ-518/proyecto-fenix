@@ -13,15 +13,15 @@
  },
  "mob_duplicados_monto": 15461000.0,
  "monto_origen": {
+  "PARQUES": 26832441663.0,
   "MATERIALES": 17145459502.0,
   "MOBILIARIO": 7355889770.0,
-  "PARQUES": 26832441663.00003,
   "TIC": 5088430000.0
  },
  "filas_estandarizadas": {
+  "PARQUES": 555,
   "MATERIALES": 2424,
   "MOBILIARIO": 6270,
-  "PARQUES": 555,
   "TIC": 1661
  },
  "mapa_departamentos": {
@@ -45,16 +45,16 @@
   "17": "ALTO PARAGUAY"
  },
  "conflictos_atributos_establecimiento": {
-  "lat": 91,
+  "lat": 92,
   "lon": 91,
   "zona": 14,
   "cai": 2,
   "indigena": 1
  },
- "instituciones": 680,
  "empresas_variantes": 26,
  "empresas_unicas": 25,
  "variantes_codigo_licitacion": 16,
+ "instituciones": 680,
  "destino": {
   "departamento": 18,
   "distrito": 202,

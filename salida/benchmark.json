@@ -2,10 +2,10 @@
  "establecimiento_ejemplo": "0405002",
  "consultas": {
   "Q1 Monto adjudicado por empresa (4 categorias)": {
-   "legacy_ms": 5.49,
+   "legacy_ms": 16.822,
    "filas_legacy": 28,
-   "normalizado_sin_indices_ms": 6.089,
-   "normalizado_con_indices_ms": 5.897,
+   "normalizado_sin_indices_ms": 4.918,
+   "normalizado_con_indices_ms": 5.723,
    "filas_normalizado": 25,
    "plan_legacy": [
     "CO-ROUTINE (subquery-4)",
@@ -20,10 +20,10 @@
    ]
   },
   "Q2 Establecimientos que recibieron las 4 categorias": {
-   "legacy_ms": 2.164,
+   "legacy_ms": 4.831,
    "filas_legacy": 1,
-   "normalizado_sin_indices_ms": 8.965,
-   "normalizado_con_indices_ms": 4.545,
+   "normalizado_sin_indices_ms": 7.806,
+   "normalizado_con_indices_ms": 3.533,
    "filas_normalizado": 1,
    "plan_legacy": [
     "CO-ROUTINE (subquery-4)",
@@ -38,10 +38,10 @@
    ]
   },
   "Q3 Todas las entregas de un establecimiento": {
-   "legacy_ms": 1.147,
+   "legacy_ms": 3.326,
    "filas_legacy": 47,
-   "normalizado_sin_indices_ms": 0.556,
-   "normalizado_con_indices_ms": 0.034,
+   "normalizado_sin_indices_ms": 0.37,
+   "normalizado_con_indices_ms": 0.054,
    "filas_normalizado": 47,
    "plan_legacy": [
     "COMPOUND QUERY",
@@ -55,10 +55,10 @@
    ]
   },
   "Q4 Cantidad total entregada por tipo de mobiliario": {
-   "legacy_ms": 3.221,
+   "legacy_ms": 4.198,
    "filas_legacy": 43,
-   "normalizado_sin_indices_ms": 29.497,
-   "normalizado_con_indices_ms": 1.724,
+   "normalizado_sin_indices_ms": 17.863,
+   "normalizado_con_indices_ms": 1.245,
    "filas_normalizado": 42,
    "plan_legacy": [
     "SCAN leg_mobiliario",

@@ -23,6 +23,18 @@ from tkinter import filedialog, messagebox, scrolledtext, simpledialog, ttk
 MARCA = os.path.join("scripts", "migracion_fenix.py")  # identifica la raiz del repositorio
 
 
+def _dependencias_para_pyinstaller():
+    """Nunca se llama. Los scripts de scripts/ se ejecutan con runpy, asi que PyInstaller no
+    ve sus 'import'. Declararlos aqui hace que queden empaquetados dentro del .exe
+    (sin esto, por ejemplo, cargar_oracle.py falla en el .exe aunque funcione como .py)."""
+    import argparse, collections, getpass, glob, hashlib, json, re, sqlite3  # noqa
+    import statistics, time, warnings  # noqa
+    from datetime import date, datetime  # noqa
+    import pandas, openpyxl, xlrd  # noqa
+    import oracledb  # noqa
+    import cryptography  # noqa  (oracledb en modo "thin" lo necesita)
+
+
 def _inicio():
     if getattr(sys, "frozen", False):
         return os.path.dirname(os.path.abspath(sys.executable))
@@ -97,19 +109,32 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Proyecto Fenix - Ejecutor de scripts")
-        self.geometry("980x620")
-        self.minsize(820, 480)
+        self.geometry("1000x760")
+        self.minsize(860, 600)
         self.cola = queue.Queue()
         self.ocupado = False
         self.botones = []
         self.botones_extra = []
         self._construir()
         self._actualizar_estado()
+        self._ajustar_ventana()
         self.after(100, self._vaciar_cola)
         if not os.path.isfile(os.path.join(ROOT, MARCA)):
             self.after(400, self._aviso_raiz)
 
     # ---------- interfaz ----------
+    def _ajustar_ventana(self):
+        """Agranda la ventana lo necesario para que todos los botones queden visibles
+        (sin importar la escala de pantalla ni cuantos scripts extra haya)."""
+        self.update_idletasks()
+        ancho = max(1000, self.winfo_reqwidth() + 20)
+        alto = max(760, self.winfo_reqheight() + 20)
+        # sin pasarse del tamano de la pantalla
+        ancho = min(ancho, self.winfo_screenwidth() - 40)
+        alto = min(alto, self.winfo_screenheight() - 80)
+        self.minsize(min(860, ancho), min(self.winfo_reqheight(), alto))
+        self.geometry(f"{ancho}x{alto}")
+
     def _construir(self):
         izq = ttk.Frame(self, padding=10)
         izq.pack(side="left", fill="y")
@@ -202,6 +227,7 @@ class App(tk.Tk):
         self.botones_extra = []
         self._cargar_extras()
         self._actualizar_estado()
+        self._ajustar_ventana()
         self.escribir(f"\nCarpeta del proyecto: {ROOT}\n", "info")
 
     def _actualizar_estado(self):
@@ -366,7 +392,9 @@ if __name__ == "__main__":
 #   pip install pyinstaller -r requirements.txt
 #   pyinstaller --onefile --windowed --name FenixGUI ^
 #       --hidden-import pandas --hidden-import openpyxl --hidden-import xlrd ^
+#       --hidden-import sqlite3 --hidden-import getpass --hidden-import argparse ^
 #       --hidden-import oracledb --collect-submodules oracledb ^
+#       --hidden-import cryptography --collect-submodules cryptography ^
 #       menu_gui.py
 #
 # (en Linux/macOS use \ en lugar de ^ al final de cada linea)
