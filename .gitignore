@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 # Base temporal que genera el benchmark
 salida/fenix_legacy_benchmark.db
+build/
+dist/
+*.spec
+FenixGUI.exe
